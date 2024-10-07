@@ -1,8 +1,11 @@
 import React from 'react'
+import CountryContainer from './country/CountryContainer'
 
 function App() {
   return (
-    <div>App</div>
+    <>
+    <CountryContainer/>
+    </>
   )
 }
 
