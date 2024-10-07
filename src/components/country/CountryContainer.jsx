@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCountries } from '../api/countriesApi';
 import CountryCard from '../card/CountryCard';
+import CountryModal from '../modal/CountryModal';
 
 const CountriesContainer = () => {
 // storing all fetched countries initially
@@ -17,6 +18,9 @@ const [sortOrder, setSortOrder] = useState('asc');
 
 //storing the current page number in the pagination
 const [currentPage, setCurrentPage] = useState(1);
+
+//for storing the country currently selected by the user
+const [selectedCountry, setSelectedCountry] = useState(null);
 
 
 const itemsPerPage = 25;
@@ -56,6 +60,10 @@ const itemsPerPage = 25;
     }
   };
 
+  const handleCountrySelect = country => {
+    setSelectedCountry(country);
+  };
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedCountries = countries.slice(startIndex, endIndex);
@@ -82,12 +90,19 @@ const itemsPerPage = 25;
             <CountryCard
               key={country.cca3} // Assuming 'cca3' is a unique identifier
               country={country}
+              onClick={() => handleCountrySelect(country)}
             />
           ))
         ) : (
           <p>No countries found.</p>
         )}
       </div>
+      {selectedCountry && (
+        <CountryModal
+          country={selectedCountry}
+          onClose={() => setSelectedCountry(null)}
+        />
+      )}
       {countries.length > 0 && (
         <div className='pagination-controls'>
           <button
